@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17  # or corretto8 if you're using Java 8
+  pre_build:
+    commands:
+      - echo "Starting pre-build phase..."
+      - mvn clean
+  build:
+    commands:
+      - echo "Building the project (tests skipped)..."
+      - mvn package -DskipTests=true
+  post_build:
+    commands:
+      - echo "Build completed successfully."
+
+artifacts:
+  files:
+    - target/*.jar
