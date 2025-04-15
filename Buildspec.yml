@@ -3,19 +3,23 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto17  # or corretto8 if you're using Java 8
+      java: corretto17
+    commands:
+      - if [ -f .last_built_commit ] && [ "$(cat .last_built_commit)" = "$CODEBUILD_RESOLVED_SOURCE_VERSION" ]; then
+        echo "No changes in API source. Skipping build.";
+        exit 0;
+        fi
   pre_build:
     commands:
-      - echo "Starting pre-build phase..."
       - mvn clean
   build:
     commands:
-      - echo "Building the project (tests skipped)..."
       - mvn package -DskipTests=true
   post_build:
     commands:
-      - echo "Build completed successfully."
+      - echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" > .last_built_commit
 
 artifacts:
   files:
     - target/*.jar
+    - .last_built_commit
