@@ -7,17 +7,15 @@ phases:
     commands:
       - echo "Checking if UI build is needed..."
       - if [ "$BUILD_UI" = "false" ]; then echo "Skipping UI build"; exit 0; fi
+
   pre_build:
     commands:
       - mvn clean
+
   build:
     commands:
       - mvn package -DskipTests=true
-  post_build:
-    commands:
-      - echo "$CODEBUILD_RESOLVED_SOURCE_VERSION" > .last_built_commit
 
 artifacts:
   files:
     - target/*.jar
-    - .last_built_commit
