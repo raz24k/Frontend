@@ -5,17 +5,16 @@ phases:
     runtime-versions:
       java: corretto17
     commands:
-      - echo "Checking if UI build is needed..."
+      - echo "Fetching BUILD_UI flag..."
+      - BUILD_UI=$(aws ssm get-parameter --name "/pipeline/BUILD_UI" --with-decryption --query "Parameter.Value" --output text)
+      - echo "BUILD_UI is $BUILD_UI"
       - if [ "$BUILD_UI" = "false" ]; then echo "Skipping UI build"; exit 0; fi
-
   pre_build:
     commands:
       - mvn clean
-
   build:
     commands:
       - mvn package -DskipTests=true
-
   post_build:
     commands:
       - echo "Resetting BUILD_UI flag to false"
