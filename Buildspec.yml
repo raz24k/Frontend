@@ -19,7 +19,7 @@ phases:
   build:
     commands:
       - if [ "$(cat build_flag.txt)" = "false" ]; then echo "Skipping actual UI build phase"; exit 0; fi
-      - echo "Running mvn package"
+      - echo "Running mvn package1"
       - mvn package -DskipTests=true
 
   post_build:
