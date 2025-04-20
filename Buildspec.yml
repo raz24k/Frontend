@@ -9,7 +9,7 @@ phases:
       - BUILD_UI=$(aws ssm get-parameter --name "/pipeline/BUILD_UI" --with-decryption --query "Parameter.Value" --output text)
       - echo "BUILD_UI is $BUILD_UI"
       - echo "$BUILD_UI" > build_flag.txt
-      - rm -rf target/*.jar || true  # Clean up any old builds
+      - rm -rf target/*.jar || true
 
   pre_build:
     commands:
@@ -18,14 +18,19 @@ phases:
 
   build:
     commands:
-      - if [ "$(cat build_flag.txt)" = "false" ]; then echo "Skipping actual UI build phase"; exit 0; fi
-      - echo "Running mvn package1"
+      - |
+        if [ "$(cat build_flag.txt)" = "false" ]; then 
+          echo "Skipping actual UI build phase"; 
+          exit 0; 
+        fi
+      - echo "Running mvn package"
       - mvn package -DskipTests=true
 
   post_build:
     commands:
-      - if [ "$(cat build_flag.txt)" = "false" ]; then echo "Resetting flag only (no build done)"; else echo "Resetting BUILD_UI flag to false"; fi
-      - aws ssm put-parameter --name "/pipeline/BUILD_UI" --value "false" --type "String" --overwrite
+      - |
+        echo "Resetting BUILD_UI flag to false"
+        aws ssm put-parameter --name "/pipeline/BUILD_UI" --value "false" --type "String" --overwrite
 
 artifacts:
   files:
