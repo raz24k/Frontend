@@ -19,7 +19,7 @@ phases:
     commands:
       - echo "Resetting BUILD_UI flag to false"
       - aws ssm put-parameter --name "/pipeline/BUILD_UI" --value "false" --type "String" --overwrite
-      - echo "test ui trigger"
+      - echo "test ui trigger1"
 
 artifacts:
   files:
