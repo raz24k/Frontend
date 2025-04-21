@@ -13,7 +13,7 @@ phases:
 
   pre_build:
     commands:
-      - echo "Pre-build step: cleaning"
+      - echo "Pre-build step cleaning"
       - mvn clean
 
   build:
