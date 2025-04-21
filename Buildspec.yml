@@ -19,7 +19,11 @@ phases:
   build:
     commands:
       - echo "Checking flag before running build"
-      - if [ "$(cat build_flag.txt)" = "false" ]; then echo "Skipping UI build"; exit 0; fi
+      - >
+        if [ "$(cat build_flag.txt)" = "false" ]; then
+          echo "Skipping UI build";
+          exit 0;
+        fi
       - echo "Running mvn package"
       - mvn package -DskipTests=true
 
@@ -30,4 +34,4 @@ phases:
 
 artifacts:
   files:
-    - target/*.jar*
+    - target/*.jar
