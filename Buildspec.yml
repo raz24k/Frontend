@@ -34,4 +34,7 @@ phases:
 
 artifacts:
   files:
-    - target/*.jar
+    - |
+      if [ "$(cat build_flag.txt)" = "true" ]; then
+      target/*.jar
+      fi
