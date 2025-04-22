@@ -34,7 +34,5 @@ phases:
 
 artifacts:
   files:
-    - |
-      if [ "$(cat build_flag.txt)" = "true" ]; then
-      target/*.jar
-      fi
+    - target/*.jar
+    - target/skipped.txt
