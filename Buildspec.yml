@@ -19,7 +19,7 @@ phases:
   build:
     commands:
       - |
-        if [ "$(cat build_flag.txt)" = "false" ]; then
+        if [ "$(cat build_flag.txt)" == "false" ]; then
           echo "Skipping UI build";
           exit 0;
         fi
