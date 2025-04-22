@@ -11,20 +11,17 @@ phases:
       - echo "$BUILD_UI" > build_flag.txt
       - rm -rf target/*.jar || true
 
-  pre_build:
-    commands:
-      - echo "Pre-build step cleaning"
-      - mvn clean
-
   build:
     commands:
       - |
         if [ "$(cat build_flag.txt)" = "false" ]; then
           echo "Skipping UI build";
+          # Create a dummy file to ensure build doesn't fail due to missing artifacts
+          mkdir -p target && echo "skipped" > target/skipped.txt
           exit 0;
         else
           echo "Running mvn package"
-          mvn package -DskipTests=true
+          mvn clean package -DskipTests=true
         fi
 
   post_build:
